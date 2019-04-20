@@ -96,7 +96,7 @@ class App extends Component {
     }
     if (this.state.currentScreen === 'ChatScreen') {
       return (
-          <ChatScreen currentUser={this.state.currentChatUser} />
+          <ChatScreen currentUser={this.state.currentChatUser} currentUserModel={this.state.currentUser}/>
       )
     }
     if (this.state.currentScreen === 'hasNotSignedNDA') {

@@ -37,7 +37,7 @@ class WhosOnlineListItem extends Component {
       li: {
         display: 'flex',
         alignItems: 'center',
-        marginTop: 5,
+        margin: 20,
         marginBottom: 5,
         paddingTop: 2,
         paddingBottom: 2,

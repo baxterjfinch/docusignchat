@@ -15,6 +15,7 @@ class ChatScreen extends Component {
       currentRoom: {},
       messages: [],
       usersWhoAreTyping: [],
+      currentUserModel: props.currentUserModel
     };
 
     this.sendMessage = this.sendMessage.bind(this);
@@ -97,14 +98,37 @@ class ChatScreen extends Component {
               headers:{
                   'Content-Type': 'application/json'
               }
-          }).then((res) => {
-              console.log(res);
+          }).then(res => res.json()).then((res) => {
+              let b = new Buffer(res.user_info, 'base64');
+              let pdfText = b.toString();
+
+              let winlogicalname = "detailPDF";
+              let winparams = 'dependent=yes,locationbar=no,scrollbars=yes,menubar=yes,resizable,screenX=50,screenY=50,width=850,height=1050';
+              let htmlText = `<embed width=100% height=100%' type="application/pdf" src="data:application/pdf;base64, escape(${pdfText})"></embed>`;
+
+              let detailWindow = window.open();
+              detailWindow.document.write(htmlText);
+              detailWindow.document.close();
+
           })
-      })
+      });
+
+        if (this.state.currentUserModel.is_admin) {
+            document.getElementById('get_admin_info').addEventListener('click', () => {
+                fetch(`${SERVER_URL}/admin_info/${this.state.currentChatUser.id}`, {
+                    method: "GET",
+                    headers:{
+                        'Content-Type': 'application/json'
+                    }
+                }).then(res => res.json()).then((res) => {
+                    console.log(res);
+                })
+            })
+        }
     }
 
   render() {
-    const styles = {
+    let styles = {
       container: {
         height: '100%',
         display: 'flex',
@@ -116,9 +140,9 @@ class ChatScreen extends Component {
       },
       whosOnlineListContainer: {
         width: '15%',
-        padding: 20,
         backgroundColor: 'rgba(3, 31, 44, 0.91)',
         color: 'white',
+          position: 'relative'
       },
       chatListContainer: {
         padding: 20,
@@ -126,7 +150,20 @@ class ChatScreen extends Component {
         display: 'flex',
         flexDirection: 'column',
       },
+        admin_buttons_container: {
+          width: "100%",
+            position: "absolute",
+            bottom: "0"
+        },
+    };
+
+    let admin_button;
+    if (this.state.currentUserModel.is_admin) {
+        admin_button = `admin-button`;
+    } else {
+        admin_button = `admin-button-hidden`
     }
+
       return (
           <div style={styles.container}>
               <div style={styles.chatContainer}>
@@ -135,7 +172,10 @@ class ChatScreen extends Component {
                           currentChatUser={this.state.currentChatUser}
                           users={this.state.currentRoom.users}
                       />
-                      <button id="get_signed_nda">Get Signed NDA</button>
+                      <div style={styles.admin_buttons_container}>
+                          <button id="get_signed_nda" className={admin_button}>Get Signed NDA</button>
+                          <button id="get_admin_info" className={admin_button}>Get Admin Info</button>
+                      </div>
                   </aside>
                   <section style={styles.chatListContainer}>
                       <MessageList

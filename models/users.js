@@ -8,6 +8,7 @@ module.exports = {
             token: null,
             hasSigned: false,
             envelope_id: '',
+            is_admin: false
         },
         {
             id: 'user_2',
@@ -16,6 +17,7 @@ module.exports = {
             token: null,
             hasSigned: false,
             envelope_id: '',
+            is_admin: true
         }
     ]
 }
