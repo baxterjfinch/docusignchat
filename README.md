@@ -1,8 +1,6 @@
-# React Chatkit starter
+# DocusignChat 
 
-Chat build with React and [Chatkit](https://pusher.com/chatkit) to be used as the starter project for my Chatkit tutorials.
-
-It's based on the [chat app](https://github.com/pusher/build-a-slack-clone-with-react-and-pusher-chatkit) built by [Alex Booker](https://twitter.com/bookercodes) in this [video tutorial](https://www.youtube.com/watch?v=6vcIW0CO07k).
+A chat application built with React, Node, and ChatKit. This application reqires signing an NDA prior to users accessing the chatroom.
 
 ## LICENSE
 MIT
