@@ -5,5 +5,6 @@ export default class User {
         this.email = props.email;
         this.hasSigned = props.hasSigned;
         this.token = props.token;
+        this.is_admin = props.is_admin;
     }
 }

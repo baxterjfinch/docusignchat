@@ -171,3 +171,26 @@ body {
 .explainer-item {
   padding-bottom: 10px;
 }
+
+.admin-button {
+  visibility: visible;
+  width: calc(100% - 20px);
+  padding: 10px;
+  color: white;
+  background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid white;
+  font-weight: 900;
+  margin: 10px;
+  margin-top: 0px;
+}
+
+.admin-button:hover {
+  transition: .3s;
+  background-color: #2b61a8;
+  cursor: pointer;
+}
+
+.admin-button-hidden {
+  visibility: hidden;
+}

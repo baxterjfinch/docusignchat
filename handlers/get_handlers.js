@@ -74,9 +74,16 @@ module.exports = {
         const {username} = req.params;
         const user = users.users.find(u => u.id === username);
 
-        if (user) {
+        if (user.is_admin) {
             getDocuments(user).then((documents) => {
-                console.log("GOT FROM ASYNC", documents)
+                //.envelopeDocuments.documentId
+                console.log(shared.ACCOUNT_ID, user.envelope_id, documents.envelopeDocuments[0].documentId);
+                const envelopesApi = new docusign.EnvelopesApi();
+                envelopesApi.getDocument(shared.ACCOUNT_ID, user.envelope_id, documents.envelopeDocuments[0].documentId, null, (err, response, response2) => {
+                    console.log("ERR FROM GETDOCUMENT", err);
+                    console.log("response FROM GETDOCUMENT", typeof response);
+                    res.status(200).send({ user_info: response });
+                });
             }).catch((err) => {
                 console.log(err)
             })
@@ -96,16 +103,16 @@ module.exports = {
         }
     },
 
-    getUserHasSigned(req, res) {
-        const {userID} = req.params;
-        const user = users.users.find(u => u.id === userID);
+    getAdminUserInfo(req, res) {
+        const {username} = req.params;
+        const user = users.users.find(u => u.id === username);
 
-        if (user) {
-            if (user.hasSigned) {
-                res.status(200).send({ description: "signed" });
-            } else {
-                res.status(401).send({ error_description: "unsigned" });
-            }
+        if (user.is_admin) {
+            shared.API_CLIENT.getUserInfo(shared.ACCESS_TOKEN, (err, response) => {
+                res.status(200).send({ user_info: response });
+            })
+        } else {
+            res.status(401).send({ error_description: "User Is Non-Admin" });
         }
     }
 };
